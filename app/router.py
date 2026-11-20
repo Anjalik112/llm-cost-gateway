@@ -34,8 +34,8 @@ class AllProvidersFailed(Exception):
 
 
 class Router:
-    def __init__(self):
-        self.providers: dict[str, BaseProvider] = {
+    def __init__(self, providers: dict[str, BaseProvider] | None = None):
+        self.providers = providers or {
             "groq": GroqProvider(),
             "gemini": GeminiProvider(),
         }
