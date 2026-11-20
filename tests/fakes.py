@@ -18,3 +18,14 @@ class FakeProvider(BaseProvider):
             model=model,
             provider=self.name,
         )
+
+
+class FakeCache:
+    def __init__(self):
+        self.store = {}
+
+    def get(self, prompt: str) -> dict | None:
+        return self.store.get(prompt)
+
+    def set(self, prompt: str, data: dict) -> None:
+        self.store[prompt] = data
