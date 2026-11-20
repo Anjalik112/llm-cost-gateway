@@ -1,6 +1,14 @@
 # Prices in USD per 1 million tokens.
 # Sources: console.groq.com/docs/models, ai.google.dev/pricing (checked 2026-11-20)
 # gemini-3.6-flash doubles on 2027-01-01: input 1.50, output 7.50
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+DAILY_BUDGET_USD = float(os.getenv("DAILY_BUDGET_USD", "0.01"))
 
 MODEL_PRICES = {
     "openai/gpt-oss-20b": {"provider": "groq", "input_per_1m": 0.075, "output_per_1m": 0.30},

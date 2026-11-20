@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime, timezone
 
-from app.router import RouteResult
+from app.schemas import ChatResponse
 
 DB_PATH = "gateway.db"
 
@@ -19,35 +19,48 @@ def init_db():
             output_tokens INTEGER NOT NULL,
             cost_usd REAL NOT NULL,
             latency_ms INTEGER NOT NULL,
-            fallback_count INTEGER NOT NULL
+            fallback_count INTEGER NOT NULL,
+            cached INTEGER NOT NULL DEFAULT 0
         )
     """)
     conn.commit()
     conn.close()
 
 
-def log_call(result: RouteResult):
+def log_call(response: ChatResponse):
     conn = sqlite3.connect(DB_PATH)
     conn.execute(
         """
         INSERT INTO calls (created_at, tier, provider, model, input_tokens,
-                           output_tokens, cost_usd, latency_ms, fallback_count)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                           output_tokens, cost_usd, latency_ms, fallback_count, cached)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             datetime.now(timezone.utc).isoformat(),
-            result.tier,
-            result.response.provider,
-            result.response.model,
-            result.response.input_tokens,
-            result.response.output_tokens,
-            result.cost_usd,
-            result.latency_ms,
-            len(result.failed_attempts),
+            response.tier,
+            response.provider,
+            response.model,
+            response.input_tokens,
+            response.output_tokens,
+            response.cost_usd,
+            response.latency_ms,
+            len(response.failed_attempts),
+            int(response.cached),
         ),
     )
     conn.commit()
     conn.close()
+
+
+def get_today_spend() -> float:
+    today = datetime.now(timezone.utc).date().isoformat()
+    conn = sqlite3.connect(DB_PATH)
+    row = conn.execute(
+        "SELECT COALESCE(SUM(cost_usd), 0) FROM calls WHERE created_at LIKE ?",
+        (f"{today}%",),
+    ).fetchone()
+    conn.close()
+    return row[0]
 
 
 def get_costs():
@@ -61,8 +74,9 @@ def get_costs():
                SUM(input_tokens) AS input_tokens,
                SUM(output_tokens) AS output_tokens,
                ROUND(SUM(cost_usd), 8) AS cost_usd,
-               CAST(AVG(latency_ms) AS INTEGER) AS avg_latency_ms,
-               SUM(fallback_count) AS fallbacks
+               CAST(AVG(CASE WHEN cached = 0 THEN latency_ms END) AS INTEGER) AS avg_latency_ms,
+               SUM(fallback_count) AS fallbacks,
+               SUM(cached) AS cache_hits
         FROM calls
         GROUP BY day, provider, model
         ORDER BY day DESC, cost_usd DESC
