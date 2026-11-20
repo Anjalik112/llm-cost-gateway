@@ -8,3 +8,10 @@ MODEL_PRICES = {
     "gemini-3.5-flash-lite": {"provider": "gemini", "input_per_1m": 0.30, "output_per_1m": 2.50},
     "gemini-3.6-flash": {"provider": "gemini", "input_per_1m": 0.75, "output_per_1m": 3.75},
 }
+
+# Order matters: the first model is tried first, the next ones are fallbacks.
+TIER_MODELS = {
+    "simple": ["openai/gpt-oss-20b", "gemini-3.5-flash-lite"],
+    "medium": ["openai/gpt-oss-120b", "gemini-3.5-flash-lite"],
+    "hard": ["gemini-3.6-flash", "openai/gpt-oss-120b"],
+}

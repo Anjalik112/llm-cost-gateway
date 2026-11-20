@@ -2,6 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 from app.providers.base import BaseProvider, LLMResponse
 
@@ -15,7 +16,13 @@ class GeminiProvider(BaseProvider):
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise ValueError("GEMINI_API_KEY is not set in .env")
-        self.client = genai.Client(api_key=api_key)
+        self.client = genai.Client(
+            api_key=api_key,
+            http_options=types.HttpOptions(
+                timeout=30_000,
+                retry_options=types.HttpRetryOptions(attempts=1),
+            ),
+        )
 
     def generate(self, prompt: str, model: str) -> LLMResponse:
         response = self.client.models.generate_content(

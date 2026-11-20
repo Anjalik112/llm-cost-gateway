@@ -15,8 +15,7 @@ class GroqProvider(BaseProvider):
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             raise ValueError("GROQ_API_KEY is not set in .env")
-        self.client = Groq(api_key=api_key)
-
+        self.client = Groq(api_key=api_key, timeout=30.0, max_retries=0)
     def generate(self, prompt: str, model: str) -> LLMResponse:
         response = self.client.chat.completions.create(
             model=model,
