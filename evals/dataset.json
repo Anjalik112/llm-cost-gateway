@@ -1,0 +1,24 @@
+[
+  {"id": 1, "tier": "simple", "question": "What is the capital of Australia?", "must_contain": ["canberra"]},
+  {"id": 2, "tier": "simple", "question": "How many days are in a leap year?", "must_contain": ["366"]},
+  {"id": 3, "tier": "simple", "question": "What is the chemical symbol for gold?", "must_contain": ["au"]},
+  {"id": 4, "tier": "simple", "question": "Who wrote the novel 1984?", "must_contain": ["orwell"]},
+  {"id": 5, "tier": "simple", "question": "What is 15 multiplied by 12?", "must_contain": ["180"]},
+  {"id": 6, "tier": "simple", "question": "What is the largest planet in our solar system?", "must_contain": ["jupiter"]},
+  {"id": 7, "tier": "simple", "question": "How many bits are in a byte? Answer with a digit.", "must_contain": ["8"]},
+
+  {"id": 8, "tier": "medium", "question": "A shop sells pens at 12 rupees each. If you buy 7 pens and pay with a 100 rupee note, how much change do you get?", "must_contain": ["16"]},
+  {"id": 9, "tier": "medium", "question": "List the three primary colours of light.", "must_contain": ["red", "green", "blue"]},
+  {"id": 10, "tier": "medium", "question": "If a train travels at 60 km per hour for 2.5 hours, how many km does it travel?", "must_contain": ["150"]},
+  {"id": 11, "tier": "medium", "question": "Summarise in one word: the process by which plants make food using sunlight.", "must_contain": ["photosynthesis"]},
+  {"id": 12, "tier": "medium", "question": "What is the next number in the sequence 2, 6, 12, 20, 30?", "must_contain": ["42"]},
+  {"id": 13, "tier": "medium", "question": "A rectangle has a perimeter of 30 cm and a length of 9 cm. What is its width in cm?", "must_contain": ["6"]},
+  {"id": 14, "tier": "medium", "question": "Convert 3.5 hours into minutes.", "must_contain": ["210"]},
+
+  {"id": 15, "tier": "hard", "question": "What does this Python code print? print(sum(range(1, 11)))", "must_contain": ["55"]},
+  {"id": 16, "tier": "hard", "question": "What does this Python code print? print(len(set('mississippi')))", "must_contain": ["4"]},
+  {"id": 17, "tier": "hard", "question": "What does this Python code print? x = [1, 2, 3]; y = x; y.append(4); print(sum(x))", "must_contain": ["10"]},
+  {"id": 18, "tier": "hard", "question": "If all bloops are razzies and all razzies are lazzies, are all bloops definitely lazzies? Answer yes or no.", "must_contain": ["yes"]},
+  {"id": 19, "tier": "hard", "question": "A bat and a ball cost 1.10 dollars in total. The bat costs 1.00 dollar more than the ball. How many cents does the ball cost? Answer as a whole number of cents.", "must_contain": ["5"]},
+  {"id": 20, "tier": "hard", "question": "What does this Python code print? print(2 ** 3 ** 2)", "must_contain": ["512"]}
+]
